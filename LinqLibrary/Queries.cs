@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,6 +40,7 @@ namespace LinqLibrary
         {
             StringGenerator();
             IntegerGenerator();
+            DataContextDBConnection();
         }
 
         public void StringGenerator()
@@ -59,6 +61,53 @@ namespace LinqLibrary
             Console.WriteLine(new string(Enumerable.Repeat(intOptions, 20).Select(s => s[random.Next(s.Length)]).ToArray()));
         }
 
+        public void DataContextDBConnection()
+        {
+            //Method 1
+            //DataContext db1 = new DataContext(@"D:\Downloads\LinqLibrary\LinqLibrary\LinqLibrary\GroceryDB.mdf");
+            //Table<Item> items = db1.GetTable<Item>();
+            //var results1 =
+            //    from item in items
+            //    where item.ItemPrice > 4
+            //    where item.ItemName.Contains("o")
+            //    select item;
 
+            //foreach (var result in results1)
+            //{
+            //    Console.WriteLine($"\t\t{result.ItemName}\t{result.ItemCategory}");
+            //}
+
+            //Method 2 - only one that works
+            ItemsEntityDataContext db2 = new ItemsEntityDataContext();
+            var results2 =
+                from item in db2.Items
+                where item.ItemPrice > 4
+                where item.ItemName.Contains("o")
+                select item;
+
+            foreach (var result in results2)
+            {
+                Console.WriteLine($"\t\t{result.ItemName}\t{result.ItemCategory}");
+            }
+
+            //Method 3 (uses partial Grocery class below)
+            Grocery db3 = new Grocery(@"D:\Downloads\LinqLibrary\LinqLibrary\LinqLibrary\GroceryDB.mdf");
+            //var results3 =
+            //    from item in db3.table
+            //    where item.ItemPrice > 4
+            //    where item.ItemName.Contains("o")
+            //    select item;
+
+            //foreach (var result in results3)
+            //{
+            //    Console.WriteLine($"\t\t{result.ItemName}\t{result.ItemCategory}");
+            //}
+        } // end method DataContextDBConnection()
     } // end class Queries
+
+    public partial class Grocery : DataContext
+    {
+        public Table<ItemsEntityDataContext> table;
+        public Grocery(string connection) : base (connection) { }
+    }
 } // end namespace LinqLibrary
