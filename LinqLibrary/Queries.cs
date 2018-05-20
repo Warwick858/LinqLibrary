@@ -40,6 +40,8 @@ namespace LinqLibrary
         {
             StringGenerator();
             IntegerGenerator();
+            QueryByIndex();
+            MathOperation();
             DataContextDBConnection();
         }
 
@@ -63,12 +65,25 @@ namespace LinqLibrary
 
         public void QueryByIndex()
         {
-            string path = "ENVQA09 TANC Customer Service 3-26-18 831 AM";
+            string path = "ENVQA09 TRUCK Customer Service 3-26-18 831 AM";
 
             string[] tokens = path.Split();
 
             var module = String.Join("", tokens.Where((s, i) => i > 0 && i < tokens.Length - 3).Select(s => s += " ").ToArray());
         } // end method QueryByIndex()
+
+        public void MathOperation()
+        {
+            double[] Inputs = { 1, 3, 4, 5 }; // x values
+            double[] Weights = { 0.3, 0.4, 0.5, 0.6 }; // w values
+            int Output = 0;
+
+            //Calculate the summation of (w * x)
+            double linearCombination = Inputs.Select((x, y) => x * Weights[y]).ToArray().Sum();
+
+            //Set output
+            Output = (linearCombination > 0) ? 1 : -1;
+        } // end method MathOperation()
 
         public void DataContextDBConnection()
         {
