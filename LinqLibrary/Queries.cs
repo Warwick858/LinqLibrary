@@ -61,6 +61,15 @@ namespace LinqLibrary
             Console.WriteLine(new string(Enumerable.Repeat(intOptions, 20).Select(s => s[random.Next(s.Length)]).ToArray()));
         }
 
+        public void QueryByIndex()
+        {
+            string path = "ENVQA09 TANC Customer Service 3-26-18 831 AM";
+
+            string[] tokens = path.Split();
+
+            var module = String.Join("", tokens.Where((s, i) => i > 0 && i < tokens.Length - 3).Select(s => s += " ").ToArray());
+        } // end method QueryByIndex()
+
         public void DataContextDBConnection()
         {
             //Method 1
@@ -91,7 +100,7 @@ namespace LinqLibrary
             }
 
             //Method 3 (uses partial Grocery class below)
-            Grocery db3 = new Grocery(@"D:\Downloads\LinqLibrary\LinqLibrary\LinqLibrary\GroceryDB.mdf");
+            //Grocery db3 = new Grocery(@"D:\Downloads\LinqLibrary\LinqLibrary\LinqLibrary\GroceryDB.mdf");
             //var results3 =
             //    from item in db3.table
             //    where item.ItemPrice > 4
@@ -105,9 +114,9 @@ namespace LinqLibrary
         } // end method DataContextDBConnection()
     } // end class Queries
 
-    public partial class Grocery : DataContext
-    {
-        public Table<ItemsEntityDataContext> table;
-        public Grocery(string connection) : base (connection) { }
-    }
+    //public partial class Grocery : DataContext
+    //{
+    //    public Table<ItemsEntityDataContext> table;
+    //    public Grocery(string connection) : base (connection) { }
+    //}
 } // end namespace LinqLibrary
